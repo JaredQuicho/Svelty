@@ -3,9 +3,11 @@
     type ColumnDef,
     type PaginationState,
     type SortingState,
+    type ColumnFiltersState,
     getCoreRowModel,
     getPaginationRowModel,
     getSortedRowModel,
+    getFilteredRowModel,
   } from "@tanstack/table-core";
 
  import {
@@ -15,6 +17,7 @@
 
  import * as Table from "$lib/components/ui/table/index.js";
  import { Button } from "$lib/components/ui/button/index.js";
+ import { Input } from "$lib/components/ui/input/index.js";
 
  type DataTableProps<TData, TValue> = {
   columns: ColumnDef<TData, TValue>[];
@@ -24,6 +27,7 @@
  let { data, columns }: DataTableProps<TData, TValue> = $props();
  let pagination = $state<PaginationState>({ pageIndex: 0, pageSize: 10 });
  let sorting = $state<SortingState>([]);
+ let columnFilters = $state<ColumnFiltersState>([]);
 
   const table = createSvelteTable({
     get data() {
@@ -33,6 +37,7 @@
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     onSortingChange: (updater) => {
       if (typeof updater === "function") {
         sorting = updater(sorting);
@@ -47,6 +52,13 @@
         pagination = updater;
       }
     },
+    onColumnFiltersChange: (updater) => {
+      if (typeof updater === "function") {
+        columnFilters = updater(columnFilters);
+      } else {
+        columnFilters = updater;
+      }
+    },
     state: {
       get pagination() {
         return pagination;
@@ -54,11 +66,28 @@
       get sorting() {
         return sorting;
       },
+      get columnFilters() {
+        return columnFilters;
+      },
     },
   });
 </script>
  
 <div>
+  <!-- =========================Column Filter===================== -->
+  <div class="flex items-center py-4">
+    <Input
+      placeholder="Filter names"
+      value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+      onchange={(e) => {
+        table.getColumn("name")?.setFilterValue(e.currentTarget.value);
+      }}
+      oninput={(e) => {
+        table.getColumn("name")?.setFilterValue(e.currentTarget.value);
+      }}
+      class="max-w-sm"
+    />
+  </div>
   <!-- ==========================Data Table======================= -->
   <div class="rounded-md border">
     <Table.Root>

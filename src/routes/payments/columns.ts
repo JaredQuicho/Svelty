@@ -3,7 +3,7 @@ import { createRawSnippet } from "svelte";
 import { renderSnippet } from "$lib/components/ui/data-table/index.js";
 import { renderComponent } from "$lib/components/ui/data-table/index.js";
 import DataTableActions from "./data-table-actions.svelte";
-import DataTableEmailButton from "./data-table-email-button.svelte";
+import DataTableEmailButton from "./data-table-name-button.svelte";
 
 // This type is used to define the shape of our data.
 export type Person = {
