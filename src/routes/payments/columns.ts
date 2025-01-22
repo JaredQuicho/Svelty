@@ -3,6 +3,7 @@ import { createRawSnippet } from "svelte";
 import { renderSnippet } from "$lib/components/ui/data-table/index.js";
 import { renderComponent } from "$lib/components/ui/data-table/index.js";
 import DataTableActions from "./data-table-actions.svelte";
+import DataTableEmailButton from "./data-table-email-button.svelte";
 
 // This type is used to define the shape of our data.
 export type Person = {
@@ -36,11 +37,13 @@ export const columns: ColumnDef<Person>[] = [
   },
   {
     accessorKey: "name", // Name column
-    header: () => {
-      const nameHeaderSnippet = createRawSnippet(() => ({
-        render: () => `<div class="text-left">Name</div>`,
-      }));
-      return renderSnippet(nameHeaderSnippet, "");
+    header: ({ column }) => {
+      // Instead of rendering raw snippets, directly render the button with the correct event
+      return renderComponent(DataTableEmailButton, {
+        onclick: () => {
+          column.toggleSorting(column.getIsSorted() === "asc"); // Toggle sorting logic
+        },
+      });
     },
     cell: ({ row }) => {
       return renderSnippet(
@@ -126,4 +129,5 @@ export const columns: ColumnDef<Person>[] = [
       return renderComponent(DataTableActions, { id: row.original.id });
     },
   },
+  
 ];
