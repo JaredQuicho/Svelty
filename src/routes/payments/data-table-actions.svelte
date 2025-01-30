@@ -28,7 +28,7 @@
       </DropdownMenu.Item>
      </DropdownMenu.Group>
      <DropdownMenu.Separator />
-     <DropdownMenu.Item>View customer</DropdownMenu.Item>
+     <DropdownMenu.Item><a href="/blankpage">Blank page</a></DropdownMenu.Item>
      <DropdownMenu.Item>View payment details</DropdownMenu.Item>
     </DropdownMenu.Content>
    </DropdownMenu.Root>

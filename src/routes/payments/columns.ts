@@ -8,11 +8,12 @@ import { Checkbox } from "$lib/components/ui/checkbox/index.js";
 
 // This type is used to define the shape of our data.
 export type Person = {
-  name: string;
-  language: string;
-  id: string;
-  bio: string;
-  version: number;
+  id: string, 
+  created_at: string,
+  updated_at: string, 
+  name: string,
+  url: string, 
+  user_id: string
 };
 
 export const columns: ColumnDef<Person>[] = [
@@ -59,70 +60,91 @@ export const columns: ColumnDef<Person>[] = [
     },
   },
   {
-    accessorKey: "language", // Language column
+    accessorKey: "created_at", // Created_At column
     header: () => {
-      const languageHeaderSnippet = createRawSnippet(() => ({
-        render: () => `<div class="text-left">Language</div>`,
+      const CreatedAtHeaderSnippet = createRawSnippet(() => ({
+        render: () => `<div class="text-left">Created_At</div>`,
       }));
-      return renderSnippet(languageHeaderSnippet, "");
+      return renderSnippet(CreatedAtHeaderSnippet, "");
     },
     cell: ({ row }) => {
       return renderSnippet(
-        createRawSnippet<[string]>((getLanguage) => {
-          const language = getLanguage();
+        createRawSnippet<[string]>((getCreatedAt) => {
+          const created_at = getCreatedAt();
           return {
-            render: () => `<div class="text-left">${language}</div>`,
+            render: () => `<div class="text-left">${created_at}</div>`,
           };
         }),
-        row.getValue("language") // The 'language' of the person
+        row.getValue("created_at") // The date "created_at" of the feeds
       );
     },
   },
   {
-    accessorKey: "bio", // Bio column
+    accessorKey: "updated_at", // Updated_At column
     header: () => {
-      const bioHeaderSnippet = createRawSnippet(() => ({
-        render: () => `<div class="text-left">Bio</div>`,
+      const UpdatedAtHeaderSnippet = createRawSnippet(() => ({
+        render: () => `<div class="text-left">Updated_At</div>`,
       }));
-      return renderSnippet(bioHeaderSnippet, "");
+      return renderSnippet(UpdatedAtHeaderSnippet, "");
     },
     cell: ({ row }) => {
       return renderSnippet(
-        createRawSnippet<[string]>((getBio) => {
-          const bio = getBio();
+        createRawSnippet<[string]>((getUpdated_At) => {
+          const updated_at = getUpdated_At();
           return {
-            render: () => `<div class="text-left">${bio}</div>`,
+            render: () => `<div class="text-left">${updated_at}</div>`,
           };
         }),
-        row.getValue("bio") // The 'bio' of the person
+        row.getValue("updated_at") // The date "updated_at" of the feeds
       );
     },
   },
   {
-    accessorKey: "version", // Version column
+    accessorKey: "url", // Url column
     header: () => {
-      const versionHeaderSnippet = createRawSnippet(() => ({
-        render: () => `<div class="text-right">Version</div>`,
+      const UrlHeaderSnippet = createRawSnippet(() => ({
+        render: () => `<div class="text-left">Url</div>`,
       }));
-      return renderSnippet(versionHeaderSnippet, "");
+      return renderSnippet(UrlHeaderSnippet, "");
     },
     cell: ({ row }) => {
-      const formatter = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      });
+      return renderSnippet(
+        createRawSnippet<[string]>((getUrl) => {
+          const url = getUrl();
+          return {
+            render: () => `<div class="text-left">${url}</div>`,
+          };
+        }),
+        row.getValue("url") // The "url" of the feeds
+      );
+    },
+  },
+  
+  // {
+  //   accessorKey: "version", // Version column
+  //   header: () => {
+  //     const versionHeaderSnippet = createRawSnippet(() => ({
+  //       render: () => `<div class="text-right">Version</div>`,
+  //     }));
+  //     return renderSnippet(versionHeaderSnippet, "");
+  //   },
+  //   cell: ({ row }) => {
+  //     const formatter = new Intl.NumberFormat("en-US", {
+  //       style: "currency",
+  //       currency: "USD",
+  //     });
 
-      return renderSnippet(
-        createRawSnippet<[string]>((getVersion) => {
-          const version = getVersion();
-          return {
-            render: () => `<div class="text-right font-medium">${version}</div>`,
-          };
-        }),
-        formatter.format(row.getValue("version")) // Format 'version' as currency or number
-      );
-    },
-  },
+  //     return renderSnippet(
+  //       createRawSnippet<[string]>((getVersion) => {
+  //         const version = getVersion();
+  //         return {
+  //           render: () => `<div class="text-right font-medium">${version}</div>`,
+  //         };
+  //       }),
+  //       formatter.format(row.getValue("version")) // Format 'version' as currency or number
+  //     );
+  //   },
+  // },
   {
     id: "actions", // Actions column (e.g., buttons)
     cell: ({ row }) => {
